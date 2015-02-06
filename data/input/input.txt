@@ -1,0 +1,8 @@
+John	40
+Robin 	25
+John	45
+Peter	15
+Robin	50
+Robin	20
+Peter	50
+Don	40
