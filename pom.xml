@@ -5,7 +5,7 @@
 	<artifactId>student-grade-dist-cache</artifactId>
 	<version>0.0.1</version>
 	<name>Student Grade Example</name>
-	<description>c</description>
+	<description>Student grade example with distributed cache</description>
 
 	<properties>
 		<hadoop.version>2.4.0</hadoop.version>
