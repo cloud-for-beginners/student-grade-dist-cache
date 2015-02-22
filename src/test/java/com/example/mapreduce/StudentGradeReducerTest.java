@@ -7,6 +7,7 @@ package com.example.mapreduce;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -19,12 +20,18 @@ import org.apache.hadoop.mrunit.MapReduceDriver;
 import org.apache.hadoop.mrunit.types.Pair;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.Log4jConfigurer;
 
 
 /**
  * The Class StudentGradeReducerTest.
  */
 public class StudentGradeReducerTest {
+
+	/** The Constant LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(StudentGradeReducerTest.class);
 
 	/** The test mapper. */
 	private Mapper<LongWritable, Text, Text, IntWritable> testMapper;
@@ -41,6 +48,11 @@ public class StudentGradeReducerTest {
 	 */
 	@Before
 	public void setup() {
+		try {
+			Log4jConfigurer.initLogging("classpath:META-INF/log4j.properties");
+		} catch (FileNotFoundException e) {
+			LOGGER.error("Unable to read log4j.properties file.");
+		}
 		testMapper = new StudentGradeMapper();
 		testReducer = new StudentGradeReducer();
 		testDriver = MapReduceDriver.newMapReduceDriver(testMapper, testReducer);
@@ -49,7 +61,7 @@ public class StudentGradeReducerTest {
 
 	/**
 	 * Test grade point.
-	 *
+	 * 
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Test
@@ -61,7 +73,7 @@ public class StudentGradeReducerTest {
 
 		for (Pair<Text, Text> p : results) {
 			if (p.getFirst().toString().equalsIgnoreCase("Robin")) {
-				System.out.println(p.getFirst() + " === " + p.getSecond());
+				LOGGER.info(p.getFirst() + " === " + p.getSecond());
 				assertEquals(p.getSecond().toString(), "A");
 			}
 		}
